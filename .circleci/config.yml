@@ -1,0 +1,85 @@
+version: 2.1
+
+executors:
+    go:
+        parameters:
+            image:
+                type: string
+                default: "circleci/golang"
+            version:
+                type: string
+        docker:
+            - image: << parameters.image >>:<< parameters.version >>
+        environment:
+            GOFLAGS: -mod=readonly
+
+jobs:
+    build:
+        parameters:
+            build_image:
+                type: string
+                default: "circleci/golang"
+            go_version:
+                type: string
+        executor:
+            name: go
+            image: << parameters.build_image >>
+            version: << parameters.go_version >>
+
+        steps:
+            - checkout
+
+            -
+                restore_cache:
+                    name: Restore build dependencies
+                    keys:
+                        - build-deps-v1-{{ .Branch }}-{{ checksum "Makefile" }}
+
+            -
+                restore_cache:
+                    name: Restore dependencies
+                    keys:
+                        - gomod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
+                        - gomod-v1-{{ .Branch }}
+                        - gomod-v1-master
+                        - gomod-v1
+
+            -
+                run:
+                    name: Download Go module cache
+                    command: go mod download
+
+            -
+                save_cache:
+                    name: Save dependencies
+                    key: gomod-v1-{{ .Branch }}-{{ checksum "go.sum" }}
+                    paths:
+                        - /go/pkg/mod
+
+            -
+                run:
+                    name: Run tests
+                    command: TEST_PKGS=$(echo `go list ./... | circleci tests split`) TEST_REPORT_NAME=results_${CIRCLE_NODE_INDEX}.xml make test
+
+            -
+                save_cache:
+                    name: Save build dependencies
+                    key: build-deps-v1-{{ .Branch }}-{{ checksum "Makefile" }}
+                    paths:
+                        - bin/
+
+            -
+                store_test_results:
+                    path: build/test_results/
+
+workflows:
+    build-go-1.12:
+        jobs:
+            - build:
+                  go_version: "1.12"
+
+    build-go-1.13:
+        jobs:
+            - build:
+                  build_image: "golang"
+                  go_version: "1.13beta1"
