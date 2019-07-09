@@ -46,8 +46,8 @@ func WithStackDepth(err error, depth int) error {
 	}
 
 	return &withStack{
-		err,
-		callers(depth + 1),
+		error: err,
+		stack: callers(depth + 1),
 	}
 }
 
@@ -64,7 +64,7 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':
 		if s.Flag('+') {
-			fmt.Fprintf(s, "%+v", w.Cause())
+			fmt.Fprintf(s, "%+v", w.error)
 			w.stack.Format(s, verb)
 			return
 		}
@@ -73,5 +73,55 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 		io.WriteString(s, w.Error())
 	case 'q':
 		fmt.Fprintf(s, "%q", w.Error())
+	}
+}
+
+// WithMessage annotates err with a new message.
+// If err is nil, WithMessage returns nil.
+func WithMessage(err error, message string) error {
+	if err == nil {
+		return nil
+	}
+
+	return &withMessage{
+		error: err,
+		msg:   message,
+	}
+}
+
+// WithMessagef annotates err with the format specifier.
+// If err is nil, WithMessagef returns nil.
+func WithMessagef(err error, format string, a ...interface{}) error {
+	if err == nil {
+		return nil
+	}
+
+	return &withMessage{
+		error: err,
+		msg:   fmt.Sprintf(format, a...),
+	}
+}
+
+type withMessage struct {
+	error error
+	msg   string
+}
+
+func (w *withMessage) Error() string { return w.msg + ": " + w.error.Error() }
+func (w *withMessage) Cause() error  { return w.error }
+func (w *withMessage) Unwrap() error { return w.error }
+
+// nolint: errcheck
+func (w *withMessage) Format(s fmt.State, verb rune) {
+	switch verb {
+	case 'v':
+		if s.Flag('+') {
+			fmt.Fprintf(s, "%+v\n", w.error)
+			io.WriteString(s, w.msg)
+			return
+		}
+		fallthrough
+	case 's', 'q':
+		io.WriteString(s, w.Error())
 	}
 }

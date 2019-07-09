@@ -108,6 +108,8 @@ func parseBlocks(input string, detectStackboundaries bool) ([]string, error) {
 }
 
 func testFormatCompleteCompare(t *testing.T, n int, arg interface{}, format string, want []string, detectStackBoundaries bool) {
+	t.Helper()
+
 	gotStr := fmt.Sprintf(format, arg)
 
 	got, err := parseBlocks(gotStr, detectStackBoundaries)
