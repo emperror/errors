@@ -13,7 +13,7 @@ func TestWithStackNil(t *testing.T) {
 }
 
 func TestWithStack(t *testing.T) {
-	origErr := &errorString{"msg"}
+	origErr := NewPlain("msg")
 	err := WithStack(origErr)
 
 	testUnwrap(t, err, origErr)
@@ -44,17 +44,17 @@ func TestWithStack_Format(t *testing.T) {
 					"\t.+/errors_with_stack_test.go:40"},
 		},
 		{
-			WithStack(&errorString{"error"}),
+			WithStack(NewPlain("error")),
 			"%s",
 			[]string{"error"},
 		},
 		{
-			WithStack(&errorString{"error"}),
+			WithStack(NewPlain("error")),
 			"%v",
 			[]string{"error"},
 		},
 		{
-			WithStack(&errorString{"error"}),
+			WithStack(NewPlain("error")),
 			"%+v",
 			[]string{"error",
 				"emperror.dev/errors.TestWithStack_Format\n" +
@@ -84,7 +84,7 @@ func TestWithStackDepthNil(t *testing.T) {
 }
 
 func TestWithStackDepth(t *testing.T) {
-	origErr := &errorString{"msg"}
+	origErr := NewPlain("msg")
 	err := WithStackDepth(origErr, 0)
 
 	testUnwrap(t, err, origErr)
@@ -92,7 +92,7 @@ func TestWithStackDepth(t *testing.T) {
 }
 
 func TestWithStackDepth_CustomDepth(t *testing.T) {
-	origErr := &errorString{"msg"}
+	origErr := NewPlain("msg")
 	var err error
 
 	func() {
@@ -127,17 +127,17 @@ func TestWithStackDepth_Format(t *testing.T) {
 					"\t.+/errors_with_stack_test.go:123"},
 		},
 		{
-			WithStack(&errorString{"error"}),
+			WithStack(NewPlain("error")),
 			"%s",
 			[]string{"error"},
 		},
 		{
-			WithStack(&errorString{"error"}),
+			WithStack(NewPlain("error")),
 			"%v",
 			[]string{"error"},
 		},
 		{
-			WithStack(&errorString{"error"}),
+			WithStack(NewPlain("error")),
 			"%+v",
 			[]string{"error",
 				"emperror.dev/errors.TestWithStackDepth_Format\n" +

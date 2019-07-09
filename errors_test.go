@@ -4,14 +4,6 @@ import (
 	"testing"
 )
 
-type errorString struct {
-	msg string
-}
-
-func (e *errorString) Error() string {
-	return e.msg
-}
-
 func testUnwrap(t *testing.T, err error, origErr error) {
 	t.Helper()
 
