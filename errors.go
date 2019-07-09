@@ -6,12 +6,12 @@ import (
 	"io"
 )
 
-// New returns a new error annotated with stack trace.
+// New returns a new error annotated with stack trace at the point New is called.
 func New(message string) error {
 	return WithStackDepth(NewPlain(message), 1)
 }
 
-// Errorf returns a new error with a formatted message and annotated with stack trace.
+// Errorf returns a new error with a formatted message and annotated with stack trace at the point Errorf is called.
 func Errorf(format string, a ...interface{}) error {
 	return WithStackDepth(NewPlain(fmt.Sprintf(format, a...)), 1)
 }
@@ -124,4 +124,18 @@ func (w *withMessage) Format(s fmt.State, verb rune) {
 	case 's', 'q':
 		io.WriteString(s, w.Error())
 	}
+}
+
+// Wrap returns an error annotating err with a stack trace
+// at the point Wrap is called, and the supplied message.
+// If err is nil, Wrap returns nil.
+func Wrap(err error, message string) error {
+	return WithStackDepth(WithMessage(err, message), 1)
+}
+
+// Wrapf returns an error annotating err with a stack trace
+// at the point Wrapf is called, and the format specifier.
+// If err is nil, Wrapf returns nil.
+func Wrapf(err error, format string, a ...interface{}) error {
+	return WithStackDepth(WithMessagef(err, format, a...), 1)
 }
