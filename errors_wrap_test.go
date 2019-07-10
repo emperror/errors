@@ -72,7 +72,7 @@ func TestWrap_Format(t *testing.T) {
 			[]string{"EOF", "error 2",
 				"emperror.dev/errors.TestWrap_Format\n" +
 					"\t.+/errors_wrap_test.go:70",
-					"error 3",
+				"error 3",
 				"emperror.dev/errors.TestWrap_Format\n" +
 					"\t.+/errors_wrap_test.go:70"},
 		},

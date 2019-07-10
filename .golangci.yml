@@ -1,3 +1,9 @@
+run:
+    skip-files:
+        - format_test.go
+        - wrap_go1_12_test.go
+        - wrap_test.go
+
 linters:
     enable-all: true
 
