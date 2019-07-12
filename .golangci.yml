@@ -1,4 +1,6 @@
 run:
+    skip-dirs:
+        - tests
     skip-files:
         - format_test.go
         - wrap_go1_12_test.go
