@@ -17,8 +17,8 @@ func Unwrap(err error) error {
 	return nil
 }
 
-// Cause returns the last error (root cause) in an error chain.
-// If the error has no cause, it is returned directly.
+// Cause returns the last error (root cause) in an err's chain.
+// If err has no chain, it is returned directly.
 //
 // It supports both Go 1.13 errors.Wrapper and github.com/pkg/errors.Causer interfaces
 // (the former takes precedence).
