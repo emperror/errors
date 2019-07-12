@@ -7,11 +7,70 @@
 
 **Drop-in replacement for the standard library `errors` package and [github.com/pkg/errors](https://github.com/pkg/errors).**
 
+This is a single, lightweight library merging the features of standard library `errors` package
+and [github.com/pkg/errors](https://github.com/pkg/errors). It also backports a few features
+(like Go 1.13 error handling related features).
+
+Standard library features:
+
+- `New` creates an error with stack trace
+- `Unwrap` supports both Go 1.13 wrapper (`interface { Unwrap() error }`) and **pkg/errors** causer (`interface { Cause() error }`) interface
+- Backported `Is` and `As` functions
+
+[github.com/pkg/errors](https://github.com/pkg/errors) features:
+- `New`, `Errorf`, `WithMessage`, `WithMessagef`, `WithStack`, `Wrap`, `Wrapf` functions behave the same way as in the original library
+- `Cause` supports both Go 1.13 wrapper (`interface { Unwrap() error }`) and **pkg/errors** causer (`interface { Cause() error }`) interface
+
+Additional features:
+- `NewPlain` creates a new error without any attached context, like stack trace
+- `WithStackDepth` allows attaching stack trace with a custom caller depth
+
 
 ## Installation
 
 ```bash
 go get emperror.dev/errors
+```
+
+
+## Usage
+
+```go
+package main
+
+import "emperror.dev/errors"
+
+var ErrSomethingWentWrong = errors.NewPlain("something went wrong")
+
+type ErrMyError struct {
+	Msg string
+}
+
+func (e ErrMyError) Error() string {
+	return e.Msg
+}
+
+func foo() error {
+	return errors.Wrap(ErrSomethingWentWrong, "error")
+}
+
+func bar() error {
+	return errors.Wrap(ErrMyError{"something went wrong"}, "error")
+}
+
+func main() {
+	if err := foo(); err != nil {
+	    if errors.Cause(err) == ErrSomethingWentWrong {
+	        // handle error
+	    }
+	}
+	
+    if err := bar(); err != nil {
+        if errors.As(err, &ErrMyError{}) {
+            // handle error
+        }
+    }
+}
 ```
 
 
