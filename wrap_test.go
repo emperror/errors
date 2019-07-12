@@ -53,6 +53,73 @@ func (e caused) Error() string { return e.msg }
 
 func (e caused) Cause() error { return e.err }
 
+func TestUnwrapEach(t *testing.T) {
+	err := errors.WithMessage(
+		errors.WithMessage(
+			errors.WithMessage(
+				errors.New("level 0"),
+				"level 1",
+			),
+			"level 2",
+		),
+		"level 3",
+	)
+
+	var i int
+	fn := func(err error) bool {
+		i++
+
+		return true
+	}
+
+	errors.UnwrapEach(err, fn)
+
+	if got, want := i, 5; got != want {
+		t.Errorf("error chain length does not match the expected one\nactual:   %d\nexpected: %d", got, want)
+	}
+}
+
+func TestUnwrapEach_BreakTheLoop(t *testing.T) {
+	err := errors.WithMessage(
+		errors.WithMessage(
+			errors.WithMessage(
+				errors.New("level 0"),
+				"level 1",
+			),
+			"level 2",
+		),
+		"level 3",
+	)
+
+	var i int
+	fn := func(err error) bool {
+		i++
+
+		return !(i > 2)
+	}
+
+	errors.UnwrapEach(err, fn)
+
+	if got, want := i, 3; got != want {
+		t.Errorf("error chain length does not match the expected one\nactual:   %d\nexpected: %d", got, want)
+	}
+}
+
+func TestUnwrapEach_NilError(t *testing.T) {
+	var i int
+	fn := func(err error) bool {
+		i++
+
+		return !(i > 2)
+	}
+
+	errors.UnwrapEach(nil, fn)
+
+	if got, want := i, 0; got != want {
+		t.Errorf("error chain length does not match the expected one\nactual:   %d\nexpected: %d", got, want)
+	}
+}
+
 type nilError struct{}
 
 func (nilError) Error() string { return "nil error" }
