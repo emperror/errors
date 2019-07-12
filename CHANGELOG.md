@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- `*If` functions that only annotate an error with a stack trace if there isn't one already in the error chain
+
 
 ## [0.1.0] - 2019-07-12
 
