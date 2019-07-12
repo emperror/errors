@@ -4,6 +4,8 @@ package errors
 import (
 	"fmt"
 	"io"
+
+	"github.com/pkg/errors"
 )
 
 // NewPlain returns a simple error without any annotated context, like stack trace.
@@ -49,6 +51,33 @@ func WithStackDepth(err error, depth int) error {
 		error: err,
 		stack: callers(depth + 1),
 	}
+}
+
+// WithStackIf annotates err with a stack trace (if err's chain does not already contain one)
+// at the point WithStackIf was called.
+// If err is nil, WithStackIf returns nil.
+func WithStackIf(err error) error {
+	return WithStackDepthIf(err, 1)
+}
+
+// WithStackDepthIf annotates err with a stack trace (if err's chain does not already contain one)
+// at the given call depth.
+// Zero identifies the caller of WithStackDepthIf itself.
+// If err is nil, WithStackDepthIf returns nil.
+func WithStackDepthIf(err error, depth int) error {
+	if err == nil {
+		return nil
+	}
+
+	var st interface{ StackTrace() errors.StackTrace } // nolint: unused
+	if !As(err, &st) {
+		return &withStack{
+			error: err,
+			stack: callers(depth + 1),
+		}
+	}
+
+	return err
 }
 
 type withStack struct {
@@ -138,4 +167,19 @@ func Wrap(err error, message string) error {
 // If err is nil, Wrapf returns nil.
 func Wrapf(err error, format string, a ...interface{}) error {
 	return WithStackDepth(WithMessagef(err, format, a...), 1)
+}
+
+// WrapIf returns an error annotating err with a stack trace (if err's chain does not already contain one)
+// at the point WrapIf is called, and the supplied message.
+//
+// If err is nil, WrapIf returns nil.
+func WrapIf(err error, message string) error {
+	return WithStackDepthIf(WithMessage(err, message), 1)
+}
+
+// WrapIff returns an error annotating err with a stack trace (if err's chain does not already contain one)
+// at the point WrapIff is called, and the format specifier.
+// If err is nil, WrapIff returns nil.
+func WrapIff(err error, format string, a ...interface{}) error {
+	return WithStackDepthIf(WithMessagef(err, format, a...), 1)
 }
