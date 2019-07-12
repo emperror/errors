@@ -6,16 +6,6 @@ import (
 	"io"
 )
 
-// New returns a new error annotated with stack trace at the point New is called.
-func New(message string) error {
-	return WithStackDepth(NewPlain(message), 1)
-}
-
-// Errorf returns a new error with a formatted message and annotated with stack trace at the point Errorf is called.
-func Errorf(format string, a ...interface{}) error {
-	return WithStackDepth(NewPlain(fmt.Sprintf(format, a...)), 1)
-}
-
 // NewPlain returns a simple error without any annotated context, like stack trace.
 // Useful for creating sentinel errors and in testing.
 func NewPlain(message string) error {
@@ -29,6 +19,16 @@ type plainError struct {
 
 func (e *plainError) Error() string {
 	return e.msg
+}
+
+// New returns a new error annotated with stack trace at the point New is called.
+func New(message string) error {
+	return WithStackDepth(NewPlain(message), 1)
+}
+
+// Errorf returns a new error with a formatted message and annotated with stack trace at the point Errorf is called.
+func Errorf(format string, a ...interface{}) error {
+	return WithStackDepth(NewPlain(fmt.Sprintf(format, a...)), 1)
 }
 
 // WithStack annotates err with a stack trace at the point WithStack was called.

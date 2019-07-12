@@ -1,7 +1,6 @@
 package errors
 
 import (
-	"io"
 	"testing"
 )
 
@@ -14,149 +13,129 @@ func TestWithStack_Nil(t *testing.T) {
 }
 
 func TestWithStack(t *testing.T) {
-	origErr := NewPlain("msg")
+	origErr := NewPlain("something went wrong")
 	err := WithStack(origErr)
+	err2 := WithStack(err)
 
-	testUnwrap(t, err, origErr)
-	testFormatRegexp(t, 1, err, "%+v", "msg\nemperror.dev/errors.TestWithStack\n\t.+/errors_with_stack_test.go:18")
-}
+	t.Parallel()
 
-func TestWithStack_Format(t *testing.T) {
-	tests := []struct {
-		error
-		format string
-		want   []string
-	}{
-		{
-			WithStack(io.EOF),
-			"%s",
-			[]string{"EOF"},
-		},
-		{
-			WithStack(io.EOF),
-			"%v",
-			[]string{"EOF"},
-		},
-		{
-			WithStack(io.EOF),
-			"%+v",
-			[]string{"EOF",
-				"emperror.dev/errors.TestWithStack_Format\n" +
-					"\t.+/errors_with_stack_test.go:41"},
-		},
-		{
-			WithStack(NewPlain("error")),
-			"%s",
-			[]string{"error"},
-		},
-		{
-			WithStack(NewPlain("error")),
-			"%v",
-			[]string{"error"},
-		},
-		{
-			WithStack(NewPlain("error")),
-			"%+v",
-			[]string{"error",
-				"emperror.dev/errors.TestWithStack_Format\n" +
-					"\t.+/errors_with_stack_test.go:58"},
-		},
-		{
-			WithStack(WithStack(io.EOF)),
-			"%+v",
-			[]string{"EOF",
-				"emperror.dev/errors.TestWithStack_Format\n" +
-					"\t.+/errors_with_stack_test.go:65",
-				"emperror.dev/errors.TestWithStack_Format\n" +
-					"\t.+/errors_with_stack_test.go:65"},
-		},
-	}
+	t.Run("error_message", func(t *testing.T) {
+		checkErrorMessage(t, err, "something went wrong")
+	})
 
-	for i, tt := range tests {
-		testFormatCompleteCompare(t, i, tt.error, tt.format, tt.want, true)
-	}
-}
+	t.Run("unwrap", func(t *testing.T) {
+		checkUnwrap(t, err, origErr)
+	})
 
-func TestWithStackDepth_Nil(t *testing.T) {
-	err := WithStackDepth(nil, 0)
+	t.Run("format", func(t *testing.T) {
+		checkFormat(t, err, map[string][]string{
+			"%s":  {"something went wrong"},
+			"%q":  {`"something went wrong"`},
+			"%v":  {"something went wrong"},
+			"%+v": {"something went wrong", "emperror.dev/errors.TestWithStack\n\t.+/errors_with_stack_test.go:17"},
+		})
 
-	if err != nil {
-		t.Errorf("nil error is expected to result in nil\nactual:   %#v", err)
-	}
+		checkFormat(t, err2, map[string][]string{
+			"%s": {"something went wrong"},
+			"%q": {`"something went wrong"`},
+			"%v": {"something went wrong"},
+			"%+v": {
+				"something went wrong",
+				"emperror.dev/errors.TestWithStack\n\t.+/errors_with_stack_test.go:17",
+				"emperror.dev/errors.TestWithStack\n\t.+/errors_with_stack_test.go:18",
+			},
+		})
+	})
+
+	t.Run("nil", func(t *testing.T) {
+		checkErrorNil(t, WithStack(nil))
+	})
 }
 
 func TestWithStackDepth(t *testing.T) {
-	origErr := NewPlain("msg")
+	origErr := NewPlain("something went wrong")
 	err := WithStackDepth(origErr, 0)
+	err2 := WithStackDepth(err, 0)
 
-	testUnwrap(t, err, origErr)
-	testFormatRegexp(t, 1, err, "%+v", "msg\nemperror.dev/errors.TestWithStackDepth\n\t.+/errors_with_stack_test.go:90")
+	t.Parallel()
+
+	t.Run("error_message", func(t *testing.T) {
+		checkErrorMessage(t, err, "something went wrong")
+	})
+
+	t.Run("unwrap", func(t *testing.T) {
+		checkUnwrap(t, err, origErr)
+	})
+
+	t.Run("format", func(t *testing.T) {
+		checkFormat(t, err, map[string][]string{
+			"%s":  {"something went wrong"},
+			"%q":  {`"something went wrong"`},
+			"%v":  {"something went wrong"},
+			"%+v": {"something went wrong", "emperror.dev/errors.TestWithStackDepth\n\t.+/errors_with_stack_test.go:57"},
+		})
+
+		checkFormat(t, err2, map[string][]string{
+			"%s": {"something went wrong"},
+			"%q": {`"something went wrong"`},
+			"%v": {"something went wrong"},
+			"%+v": {
+				"something went wrong",
+				"emperror.dev/errors.TestWithStackDepth\n\t.+/errors_with_stack_test.go:57",
+				"emperror.dev/errors.TestWithStackDepth\n\t.+/errors_with_stack_test.go:58",
+			},
+		})
+	})
+
+	t.Run("nil", func(t *testing.T) {
+		checkErrorNil(t, WithStack(nil))
+	})
 }
 
 func TestWithStackDepth_CustomDepth(t *testing.T) {
-	origErr := NewPlain("msg")
-	var err error
+	origErr := NewPlain("something went wrong")
+
+	var err, err2 error
 
 	func() {
 		err = WithStackDepth(origErr, 1)
+		err2 = WithStackDepth(err, 1)
 	}()
 
-	testUnwrap(t, err, origErr)
-	testFormatRegexp(t, 1, err, "%+v", "msg\nemperror.dev/errors.TestWithStackDepth\n\t.+/errors_with_stack_test.go:102")
-}
+	t.Parallel()
 
-func TestWithStackDepth_Format(t *testing.T) {
-	tests := []struct {
-		error
-		format string
-		want   []string
-	}{
-		{
-			WithStack(io.EOF),
-			"%s",
-			[]string{"EOF"},
-		},
-		{
-			WithStack(io.EOF),
-			"%v",
-			[]string{"EOF"},
-		},
-		{
-			WithStack(io.EOF),
-			"%+v",
-			[]string{"EOF",
-				"emperror.dev/errors.TestWithStackDepth_Format\n" +
-					"\t.+/errors_with_stack_test.go:125"},
-		},
-		{
-			WithStack(NewPlain("error")),
-			"%s",
-			[]string{"error"},
-		},
-		{
-			WithStack(NewPlain("error")),
-			"%v",
-			[]string{"error"},
-		},
-		{
-			WithStack(NewPlain("error")),
-			"%+v",
-			[]string{"error",
-				"emperror.dev/errors.TestWithStackDepth_Format\n" +
-					"\t.+/errors_with_stack_test.go:142"},
-		},
-		{
-			WithStack(WithStack(io.EOF)),
-			"%+v",
-			[]string{"EOF",
-				"emperror.dev/errors.TestWithStackDepth_Format\n" +
-					"\t.+/errors_with_stack_test.go:149",
-				"emperror.dev/errors.TestWithStackDepth_Format\n" +
-					"\t.+/errors_with_stack_test.go:149"},
-		},
-	}
+	t.Run("error_message", func(t *testing.T) {
+		checkErrorMessage(t, err, "something went wrong")
+	})
 
-	for i, tt := range tests {
-		testFormatCompleteCompare(t, i, tt.error, tt.format, tt.want, true)
-	}
+	t.Run("unwrap", func(t *testing.T) {
+		checkUnwrap(t, err, origErr)
+	})
+
+	t.Run("format", func(t *testing.T) {
+		checkFormat(t, err, map[string][]string{
+			"%s": {"something went wrong"},
+			"%q": {`"something went wrong"`},
+			"%v": {"something went wrong"},
+			"%+v": {
+				"something went wrong",
+				"emperror.dev/errors.TestWithStackDepth_CustomDepth\n\t.+/errors_with_stack_test.go:103",
+			},
+		})
+
+		checkFormat(t, err2, map[string][]string{
+			"%s": {"something went wrong"},
+			"%q": {`"something went wrong"`},
+			"%v": {"something went wrong"},
+			"%+v": {
+				"something went wrong",
+				"emperror.dev/errors.TestWithStackDepth_CustomDepth\n\t.+/errors_with_stack_test.go:103",
+				"emperror.dev/errors.TestWithStackDepth_CustomDepth\n\t.+/errors_with_stack_test.go:103",
+			},
+		})
+	})
+
+	t.Run("nil", func(t *testing.T) {
+		checkErrorNil(t, WithStack(nil))
+	})
 }
