@@ -13,7 +13,6 @@ and [github.com/pkg/errors](https://github.com/pkg/errors). It also backports a 
 (like Go 1.13 error handling related features).
 
 Standard library features:
-
 - `New` creates an error with stack trace
 - `Unwrap` supports both Go 1.13 wrapper (`interface { Unwrap() error }`) and **pkg/errors** causer (`interface { Cause() error }`) interface
 - Backported `Is` and `As` functions
