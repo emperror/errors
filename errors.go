@@ -1,4 +1,17 @@
-// Package errors is a drop-in replacement for the standard errors package and github.com/pkg/errors.
+/*
+	Package errors is a drop-in replacement for the standard errors package and github.com/pkg/errors.
+
+	It provides various tools to annotate errors (with additional message, stack trace, etc).
+
+
+	Printing errors
+
+	If not stated otherwise, errors can be formatted with the following specifiers:
+		%s	error message
+		%q	double-quoted error message
+		%v	error message in default format
+		%+v	error message and stack trace
+ */
 package errors
 
 import (
@@ -10,6 +23,8 @@ import (
 
 // NewPlain returns a simple error without any annotated context, like stack trace.
 // Useful for creating sentinel errors and in testing.
+//
+// 	var ErrSomething = errors.NewPlain("something went wrong")
 func NewPlain(message string) error {
 	return &plainError{message}
 }
@@ -24,17 +39,31 @@ func (e *plainError) Error() string {
 }
 
 // New returns a new error annotated with stack trace at the point New is called.
+//
+// New is a shorthand for:
+// 	WithStack(NewPlain(message))
 func New(message string) error {
 	return WithStackDepth(NewPlain(message), 1)
 }
 
 // Errorf returns a new error with a formatted message and annotated with stack trace at the point Errorf is called.
+//
+// 	err := errors.Errorf("something went %s", "wrong")
 func Errorf(format string, a ...interface{}) error {
 	return WithStackDepth(NewPlain(fmt.Sprintf(format, a...)), 1)
 }
 
 // WithStack annotates err with a stack trace at the point WithStack was called.
 // If err is nil, WithStack returns nil.
+//
+// WithStack is commonly used with sentinel errors and errors returned from libraries
+// not annotating errors with stack trace:
+//
+// 	var ErrSomething = errors.NewPlain("something went wrong")
+//
+// 	func doSomething() error {
+// 		return errors.WithStack(ErrSomething)
+// 	}
 func WithStack(err error) error {
 	return WithStackDepth(err, 1)
 }
@@ -42,6 +71,12 @@ func WithStack(err error) error {
 // WithStackDepth annotates err with a stack trace at the given call depth.
 // Zero identifies the caller of WithStackDepth itself.
 // If err is nil, WithStackDepth returns nil.
+//
+// WithStackDepth is generally used in other error constructors:
+//
+// 	func MyWrapper(err error) error {
+// 		return WithStackDepth(err, 1)
+// 	}
 func WithStackDepth(err error, depth int) error {
 	if err == nil {
 		return nil
@@ -53,17 +88,14 @@ func WithStackDepth(err error, depth int) error {
 	}
 }
 
-// WithStackIf annotates err with a stack trace (if err's chain does not already contain one)
-// at the point WithStackIf was called.
-// If err is nil, WithStackIf returns nil.
+// WithStackIf behaves the same way as WithStack except it does not annotate the error with a stack trace
+// if there is already one in err's chain.
 func WithStackIf(err error) error {
 	return WithStackDepthIf(err, 1)
 }
 
-// WithStackDepthIf annotates err with a stack trace (if err's chain does not already contain one)
-// at the given call depth.
-// Zero identifies the caller of WithStackDepthIf itself.
-// If err is nil, WithStackDepthIf returns nil.
+// WithStackDepthIf behaves the same way as WithStackDepth except it does not annotate the error with a stack trace
+// if there is already one in err's chain.
 func WithStackDepthIf(err error, depth int) error {
 	if err == nil {
 		return nil
@@ -107,6 +139,15 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 
 // WithMessage annotates err with a new message.
 // If err is nil, WithMessage returns nil.
+//
+// WithMessage is useful when the error already contains a stack trace, but adding additional info to the message
+// helps in debugging.
+//
+// Errors returned by WithMessage are formatted slightly differently:
+// 	%s	error messages separated by a colon and a space (": ")
+// 	%q	double-quoted error messages separated by a colon and a space (": ")
+// 	%v	one error message per line
+// 	%+v	one error message per line and stack trace (if any)
 func WithMessage(err error, message string) error {
 	if err == nil {
 		return nil
@@ -120,6 +161,11 @@ func WithMessage(err error, message string) error {
 
 // WithMessagef annotates err with the format specifier.
 // If err is nil, WithMessagef returns nil.
+//
+// WithMessagef is useful when the error already contains a stack trace, but adding additional info to the message
+// helps in debugging.
+//
+// The same formatting rules apply as in case of WithMessage.
 func WithMessagef(err error, format string, a ...interface{}) error {
 	if err == nil {
 		return nil
@@ -158,6 +204,9 @@ func (w *withMessage) Format(s fmt.State, verb rune) {
 // Wrap returns an error annotating err with a stack trace
 // at the point Wrap is called, and the supplied message.
 // If err is nil, Wrap returns nil.
+//
+// Wrap is a shorthand for:
+// 	WithStack(WithMessage(err, message))
 func Wrap(err error, message string) error {
 	return WithStackDepth(WithMessage(err, message), 1)
 }
@@ -165,20 +214,24 @@ func Wrap(err error, message string) error {
 // Wrapf returns an error annotating err with a stack trace
 // at the point Wrapf is called, and the format specifier.
 // If err is nil, Wrapf returns nil.
+//
+// Wrapf is a shorthand for:
+// 	WithStack(WithMessagef(err, format, a...))
 func Wrapf(err error, format string, a ...interface{}) error {
 	return WithStackDepth(WithMessagef(err, format, a...), 1)
 }
 
-// WrapIf returns an error annotating err with a stack trace (if err's chain does not already contain one)
-// at the point WrapIf is called, and the supplied message.
+// WrapIf behaves the same way as Wrap except it does not annotate the error with a stack trace
+// if there is already one in err's chain.
 //
 // If err is nil, WrapIf returns nil.
 func WrapIf(err error, message string) error {
 	return WithStackDepthIf(WithMessage(err, message), 1)
 }
 
-// WrapIff returns an error annotating err with a stack trace (if err's chain does not already contain one)
-// at the point WrapIff is called, and the format specifier.
+// WrapIff behaves the same way as Wrapf except it does not annotate the error with a stack trace
+// if there is already one in err's chain.
+//
 // If err is nil, WrapIff returns nil.
 func WrapIff(err error, format string, a ...interface{}) error {
 	return WithStackDepthIf(WithMessagef(err, format, a...), 1)
