@@ -82,6 +82,26 @@ func ExampleCombine() {
 	//  -  call 5 failed
 }
 
+func ExampleCombine_loop() {
+	var errs []error
+
+	for i := 1; i < 6; i++ {
+		if i%2 == 0 {
+			continue
+		}
+
+		err := errors.NewPlain(fmt.Sprintf("call %d failed", i))
+		errs = append(errs, err)
+	}
+	err := errors.Combine(errs...)
+	fmt.Printf("%+v", err)
+	// Output:
+	// the following errors occurred:
+	//  -  call 1 failed
+	//  -  call 3 failed
+	//  -  call 5 failed
+}
+
 func ExampleAppend() {
 	var err error
 	err = errors.Append(err, errors.NewPlain("call 1 failed"))
