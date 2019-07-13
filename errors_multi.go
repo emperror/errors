@@ -53,3 +53,17 @@ func Combine(errors ...error) error {
 func Append(left error, right error) error {
 	return multierr.Append(left, right)
 }
+
+// GetErrors returns a slice containing zero or more errors that the supplied
+// error is composed of. If the error is nil, the returned slice is empty.
+//
+// 	err := errors.Append(r.Close(), w.Close())
+// 	errors := errors.Errors(err)
+//
+// If the error is not composed of other errors, the returned slice contains
+// just the error that was passed in.
+//
+// Callers of this function are free to modify the returned slice.
+func GetErrors(err error) []error {
+	return multierr.Errors(err)
+}
