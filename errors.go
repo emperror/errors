@@ -8,20 +8,6 @@
 	and https://github.com/pkg/errors. It also backports a few features
 	(like Go 1.13 error handling related features).
 
-	Standard library features:
-		- `New` creates an error with stack trace
-		- `Unwrap` supports both Go 1.13 wrapper (`interface { Unwrap() error }`) and **pkg/errors** causer (`interface { Cause() error }`) interface
-		- Backported `Is` and `As` functions
-
-	https://github.com/pkg/errors features:
-		- `New`, `Errorf`, `WithMessage`, `WithMessagef`, `WithStack`, `Wrap`, `Wrapf` functions behave the same way as in the original library
-		- `Cause` supports both Go 1.13 wrapper (`interface { Unwrap() error }`) and **pkg/errors** causer (`interface { Cause() error }`) interface
-
-	Additional features:
-		- `NewPlain` creates a new error without any attached context, like stack trace
-		- `WithStackDepth` allows attaching stack trace with a custom caller depth
-		- `WithStackDepthIf`, `WithStackIf`, `WrapIf`, `WrapIff` only annotate errors with a stack trace if there isn't one already in the error chain
-
 
 	Printing errors
 
@@ -30,7 +16,7 @@
 		%q	double-quoted error message
 		%v	error message in default format
 		%+v	error message and stack trace
- */
+*/
 package errors
 
 import (
