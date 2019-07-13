@@ -70,11 +70,11 @@ func main() {
 	    }
 	}
 	
-    if err := bar(); err != nil {
-        if errors.As(err, &ErrMyError{}) {
-            // handle error
-        }
-    }
+	if err := bar(); err != nil {
+		if errors.As(err, &ErrMyError{}) {
+			// handle error
+		}
+	}
 }
 ```
 
