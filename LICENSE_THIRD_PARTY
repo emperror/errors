@@ -1,4 +1,4 @@
-The package contains code copied from various third-party libraries.
+Certain parts of this library are inspired by (or entirely copied from) various third party libraries.
 This file contains their licenses.
 
 github.com/pkg/errors:

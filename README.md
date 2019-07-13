@@ -90,3 +90,6 @@ $ make check
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
+
+Certain parts of this library are inspired by (or entirely copied from) various third party libraries.
+Their licenses can be found in the [Third Party License File](LICENSE_THIRD_PARTY).
