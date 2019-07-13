@@ -42,8 +42,10 @@ package main
 
 import "emperror.dev/errors"
 
+// ErrSomethingWentWrong is a sentinel error which can be useful within a single API layer.
 var ErrSomethingWentWrong = errors.NewPlain("something went wrong")
 
+// ErrMyError is an error that can be returned from a public API.
 type ErrMyError struct {
 	Msg string
 }
@@ -53,7 +55,8 @@ func (e ErrMyError) Error() string {
 }
 
 func foo() error {
-	return errors.Wrap(ErrSomethingWentWrong, "error")
+	// Attach stack trace to the sentinel error.
+	return errors.WithStack(ErrSomethingWentWrong)
 }
 
 func bar() error {
@@ -62,7 +65,7 @@ func bar() error {
 
 func main() {
 	if err := foo(); err != nil {
-	    if errors.Cause(err) == ErrSomethingWentWrong {
+	    if errors.Cause(err) == ErrSomethingWentWrong { // or errors.Is(ErrSomethingWentWrong)
 	        // handle error
 	    }
 	}
