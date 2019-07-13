@@ -65,9 +65,9 @@ func bar() error {
 
 func main() {
 	if err := foo(); err != nil {
-	    if errors.Cause(err) == ErrSomethingWentWrong { // or errors.Is(ErrSomethingWentWrong)
-	        // handle error
-	    }
+		if errors.Cause(err) == ErrSomethingWentWrong { // or errors.Is(ErrSomethingWentWrong)
+			// handle error
+		}
 	}
 	
 	if err := bar(); err != nil {
