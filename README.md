@@ -25,6 +25,7 @@ Additional features:
 - `NewPlain` creates a new error without any attached context, like stack trace
 - `WithStackDepth` allows attaching stack trace with a custom caller depth
 - `WithStackDepthIf`, `WithStackIf`, `WrapIf`, `WrapIff` only annotate errors with a stack trace if there isn't one already in the error chain
+- Multi error aggregating multiple errors into a single value
 
 
 ## Installation
