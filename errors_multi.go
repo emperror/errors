@@ -58,7 +58,7 @@ func Append(left error, right error) error {
 // error is composed of. If the error is nil, the returned slice is empty.
 //
 // 	err := errors.Append(r.Close(), w.Close())
-// 	errors := errors.Errors(err)
+// 	errors := errors.GetErrors(err)
 //
 // If the error is not composed of other errors, the returned slice contains
 // just the error that was passed in.
