@@ -241,3 +241,23 @@ func WrapIf(err error, message string) error {
 func WrapIff(err error, format string, a ...interface{}) error {
 	return WithStackDepthIf(WithMessagef(err, format, a...), 1)
 }
+
+// WrapWithDetails returns an error annotating err with a stack trace
+// at the point WrapWithDetails is called, and the supplied message and details.
+// If err is nil, WrapWithDetails returns nil.
+//
+// WrapWithDetails is a shorthand for:
+// 	WithDetails(WithStack(WithMessage(err, message, details...))
+func WrapWithDetails(err error, message string, details ...interface{}) error {
+	return WithDetails(WithStackDepth(WithMessage(err, message), 1), details...)
+}
+
+// WrapIfWithDetails returns an error annotating err with a stack trace
+// at the point WrapIfWithDetails is called, and the supplied message and details.
+// If err is nil, WrapIfWithDetails returns nil.
+//
+// WrapIfWithDetails is a shorthand for:
+// 	WithDetails(WithStackIf(WithMessage(err, message, details...))
+func WrapIfWithDetails(err error, message string, details ...interface{}) error {
+	return WithDetails(WithStackDepthIf(WithMessage(err, message), 1), details...)
+}
