@@ -169,3 +169,81 @@ func TestWrapIff(t *testing.T) {
 		checkErrorNil(t, WrapIff(nil, "%s", "error"))
 	})
 }
+
+func TestWrapWithDetails(t *testing.T) {
+	origErr := NewPlain("something went wrong")
+	details := []interface{}{"key", "value"}
+	err := WrapWithDetails(origErr, "error", details...)
+
+	t.Parallel()
+
+	t.Run("error_message", func(t *testing.T) {
+		checkErrorMessage(t, err, "error: something went wrong")
+	})
+
+	t.Run("unwrap", func(t *testing.T) {
+		checkUnwrap(t, err, err.(*withDetails).error)
+	})
+
+	t.Run("format", func(t *testing.T) {
+		checkFormat(t, err, map[string][]string{
+			"%s":  {"error: something went wrong"},
+			"%q":  {`"error: something went wrong"`},
+			"%v":  {"error: something went wrong"},
+			"%+v": {"something went wrong", "error", "emperror.dev/errors.TestWrapWithDetails\n\t.+/errors_wrap_test.go:176"},
+		})
+	})
+
+	t.Run("nil", func(t *testing.T) {
+		checkErrorNil(t, WrapWithDetails(nil, "error", "key", "value"))
+	})
+
+	t.Run("details", func(t *testing.T) {
+		d := GetDetails(err)
+
+		for i, detail := range d {
+			if got, want := detail, details[i]; got != want {
+				t.Errorf("error detail does not match the expected one\nactual:   %+v\nexpected: %+v", got, want)
+			}
+		}
+	})
+}
+
+func TestWrapIfWithDetails(t *testing.T) {
+	origErr := NewPlain("something went wrong")
+	details := []interface{}{"key", "value"}
+	err := WrapIfWithDetails(WithStack(origErr), "error", details...)
+
+	t.Parallel()
+
+	t.Run("error_message", func(t *testing.T) {
+		checkErrorMessage(t, err, "error: something went wrong")
+	})
+
+	t.Run("unwrap", func(t *testing.T) {
+		checkUnwrap(t, err, err.(*withDetails).error)
+	})
+
+	t.Run("format", func(t *testing.T) {
+		checkFormat(t, err, map[string][]string{
+			"%s":  {"error: something went wrong"},
+			"%q":  {`error: something went wrong`}, // TODO: quotes?
+			"%v":  {"error: something went wrong"},
+			// "%+v": {"something went wrong", "error", "emperror.dev/errors.TestWrapIfWithDetails\n\t.+/errors_wrap_test.go:215"},
+		})
+	})
+
+	t.Run("nil", func(t *testing.T) {
+		checkErrorNil(t, WrapIfWithDetails(nil, "error", "key", "value"))
+	})
+
+	t.Run("details", func(t *testing.T) {
+		d := GetDetails(err)
+
+		for i, detail := range d {
+			if got, want := detail, details[i]; got != want {
+				t.Errorf("error detail does not match the expected one\nactual:   %+v\nexpected: %+v", got, want)
+			}
+		}
+	})
+}
