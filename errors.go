@@ -51,6 +51,12 @@ func New(message string) error {
 	return WithStackDepth(NewPlain(message), 1)
 }
 
+// NewWithDetails returns a new error annotated with stack trace at the point NewWithDetails is called,
+// and the supplied details.
+func NewWithDetails(message string, details ...interface{}) error {
+	return WithDetails(WithStackDepth(NewPlain(message), 1), details...)
+}
+
 // Errorf returns a new error with a formatted message and annotated with stack trace at the point Errorf is called.
 //
 // 	err := errors.Errorf("something went %s", "wrong")
