@@ -26,6 +26,7 @@ Additional features:
 - `WithStackDepth` allows attaching stack trace with a custom caller depth
 - `WithStackDepthIf`, `WithStackIf`, `WrapIf`, `WrapIff` only annotate errors with a stack trace if there isn't one already in the error chain
 - Multi error aggregating multiple errors into a single value
+- `NewWithDetails`, `WithDetails` and `Wrap*WithDetails` functions to add key-value pairs to an error
 
 
 ## Installation

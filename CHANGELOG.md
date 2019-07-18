@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- `NewWithDetails` function to create a new error with details attached
+
 
 ## [0.4.1] - 2019-07-17
 
