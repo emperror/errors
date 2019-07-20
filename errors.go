@@ -17,7 +17,7 @@
 		%v	error message in default format
 		%+v	error message and stack trace
 */
-package errors
+package errors // import "emperror.dev/errors"
 
 import (
 	"fmt"
