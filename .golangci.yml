@@ -1,12 +1,3 @@
-linters:
-    enable-all: true
-
-linters-settings:
-    golint:
-        min-confidence: 0.1
-    goimports:
-        local-prefixes: emperror.dev/errors
-
 run:
     skip-dirs:
         - tests
@@ -14,6 +5,15 @@ run:
         - format_test.go
         - wrap_go1_12_test.go
         - wrap_test.go
+
+linters-settings:
+    golint:
+        min-confidence: 0.1
+    goimports:
+        local-prefixes: github.com/goph/logur
+
+linters:
+    enable-all: true
 
 issues:
     exclude-rules:
