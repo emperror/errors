@@ -23,6 +23,25 @@ func TestNewPlain(t *testing.T) {
 	})
 }
 
+func TestNewConstant(t *testing.T) {
+	err := NewConstant("error")
+
+	t.Parallel()
+
+	t.Run("error_message", func(t *testing.T) {
+		checkErrorMessage(t, err, "error")
+	})
+
+	t.Run("format", func(t *testing.T) {
+		checkFormat(t, err, map[string][]string{
+			"%s":  {"error"},
+			"%q":  {`"error"`},
+			"%v":  {"error"},
+			"%+v": {"error"},
+		})
+	})
+}
+
 func TestNew(t *testing.T) {
 	err := New("error")
 	origErr := err.(*withStack).error
@@ -42,7 +61,7 @@ func TestNew(t *testing.T) {
 			"%s":  {"error"},
 			"%q":  {`"error"`},
 			"%v":  {"error"},
-			"%+v": {"error", "emperror.dev/errors.TestNew\n\t.+/errors_new_test.go:27"},
+			"%+v": {"error", "emperror.dev/errors.TestNew\n\t.+/errors_new_test.go:46"},
 		})
 	})
 }
@@ -67,7 +86,7 @@ func TestNewWithDetails(t *testing.T) {
 			"%s":  {"error"},
 			"%q":  {`"error"`},
 			"%v":  {"error"},
-			"%+v": {"error", "emperror.dev/errors.TestNewWithDetails\n\t.+/errors_new_test.go:52"},
+			"%+v": {"error", "emperror.dev/errors.TestNewWithDetails\n\t.+/errors_new_test.go:71"},
 		})
 	})
 
@@ -114,7 +133,7 @@ func TestErrorf(t *testing.T) {
 			"%s":  {"error: something went wrong"},
 			"%q":  {`"error: something went wrong"`},
 			"%v":  {"error: something went wrong"},
-			"%+v": {"error: something went wrong", "emperror.dev/errors.TestErrorf\n\t.+/errors_new_test.go:99"},
+			"%+v": {"error: something went wrong", "emperror.dev/errors.TestErrorf\n\t.+/errors_new_test.go:118"},
 		})
 	})
 }
