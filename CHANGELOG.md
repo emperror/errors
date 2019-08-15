@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- [Constant error](https://dave.cheney.net/2016/04/07/constant-errors)
+
 
 ## [0.4.2] - 2019-07-19
 
