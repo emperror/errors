@@ -43,6 +43,24 @@ func (e *plainError) Error() string {
 	return e.msg
 }
 
+// NewConstant returns a simple error without any annotated context, like stack trace.
+// Useful for creating sentinel errors and in testing.
+// Compared to NewPlain, the returned error is not a struct under the hood, but a string
+// which allows storing it in a constant.
+//
+// 	const ErrSomething = errors.NewConstant("something went wrong")
+//
+// See https://dave.cheney.net/2016/04/07/constant-errors
+func NewConstant(message string) error {
+	return constantError(message)
+}
+
+type constantError string
+
+func (e constantError) Error() string {
+	return string(e)
+}
+
 // New returns a new error annotated with stack trace at the point New is called.
 //
 // New is a shorthand for:
