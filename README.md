@@ -24,6 +24,7 @@ Standard library features:
 
 Additional features:
 - `NewPlain` creates a new error without any attached context, like stack trace
+- `NewConstant` is similar to `NewPlain`, but it creates a new [constant error](https://dave.cheney.net/2016/04/07/constant-errors)
 - `WithStackDepth` allows attaching stack trace with a custom caller depth
 - `WithStackDepthIf`, `WithStackIf`, `WrapIf`, `WrapIff` only annotate errors with a stack trace if there isn't one already in the error chain
 - Multi error aggregating multiple errors into a single value
