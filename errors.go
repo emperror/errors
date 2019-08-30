@@ -43,21 +43,15 @@ func (e *plainError) Error() string {
 	return e.msg
 }
 
-// NewConstant returns a simple error without any annotated context, like stack trace.
-// Useful for creating sentinel errors and in testing.
-// Compared to NewPlain, the returned error is not a struct under the hood, but a string
-// which allows storing it in a constant.
+// Sentinel is a simple error without any annotated context, like stack trace.
+// Useful for creating sentinel errors.
 //
-// 	const ErrSomething = errors.NewConstant("something went wrong")
+// 	const ErrSomething = errors.Sentinel("something went wrong")
 //
 // See https://dave.cheney.net/2016/04/07/constant-errors
-func NewConstant(message string) error {
-	return constantError(message)
-}
+type Sentinel string
 
-type constantError string
-
-func (e constantError) Error() string {
+func (e Sentinel) Error() string {
 	return string(e)
 }
 

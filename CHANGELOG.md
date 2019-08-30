@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- [Constant error](https://dave.cheney.net/2016/04/07/constant-errors)
+- `Sentinel` error type for creating [constant error](https://dave.cheney.net/2016/04/07/constant-errors)
 
 
 ## [0.4.2] - 2019-07-19
