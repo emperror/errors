@@ -7,6 +7,13 @@ import (
 	"emperror.dev/errors"
 )
 
+// nolint: unused
+func ExampleSentinel() {
+	const ErrSomething = errors.Sentinel("something went wrong")
+
+	// Output:
+}
+
 func ExampleAs() {
 	if _, err := os.Open("non-existing"); err != nil {
 		var pathError *os.PathError
