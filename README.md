@@ -46,7 +46,7 @@ package main
 import "emperror.dev/errors"
 
 // ErrSomethingWentWrong is a sentinel error which can be useful within a single API layer.
-var ErrSomethingWentWrong = errors.NewPlain("something went wrong")
+const ErrSomethingWentWrong = errors.Sentinel("something went wrong")
 
 // ErrMyError is an error that can be returned from a public API.
 type ErrMyError struct {
