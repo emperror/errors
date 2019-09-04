@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## [0.4.3] - 2019-09-05
+
 ### Added
 
 - `Sentinel` error type for creating [constant error](https://dave.cheney.net/2016/04/07/constant-errors)
@@ -55,7 +58,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Initial release
 
 
-[Unreleased]: https://github.com/emperror/errors/compare/v0.4.2...HEAD
+[Unreleased]: https://github.com/emperror/errors/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/emperror/errors/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/emperror/errors/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/emperror/errors/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/emperror/errors/compare/v0.3.0...v0.4.0
