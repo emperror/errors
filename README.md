@@ -6,6 +6,7 @@
 [![GolangCI](https://golangci.com/badges/github.com/emperror/errors.svg)](https://golangci.com/r/github.com/emperror/errors)
 [![Go Version](https://img.shields.io/badge/go%20version-%3E=1.12-orange.svg?style=flat-square)](https://github.com/emperror/errors)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](https://godoc.org/emperror.dev/errors)
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/avelino/awesome-go)
 
 **Drop-in replacement for the standard library `errors` package and [github.com/pkg/errors](https://github.com/pkg/errors).**
 
