@@ -1,6 +1,8 @@
 package match
 
 import (
+	"reflect"
+
 	"emperror.dev/errors"
 )
 
@@ -57,8 +59,26 @@ func Is(target error) ErrorMatcher {
 
 // As returns an error matcher that determines matching by calling errors.As.
 func As(target interface{}) ErrorMatcher {
+	if target == nil {
+		panic("errors: target cannot be nil")
+	}
+
+	val := reflect.ValueOf(target)
+	typ := val.Type()
+	if typ.Kind() != reflect.Ptr || val.IsNil() {
+		panic("errors: target must be a non-nil pointer")
+	}
+	if e := typ.Elem(); e.Kind() != reflect.Interface && !e.Implements(errorType) {
+		panic("errors: *target must be interface or implement error")
+	}
+
+	tar := reflect.New(typ).Interface()
+
 	return errorMatcherFunc(func(err error) bool {
-		// TODO recover from panic in case target is invalid to avoid and error storm
-		return errors.As(err, target)
+		target := tar
+
+		return errors.As(err, &target)
 	})
 }
+
+var errorType = reflect.TypeOf((*error)(nil)).Elem()

@@ -104,3 +104,39 @@ func TestAs_Race(t *testing.T) {
 		}
 	}()
 }
+
+func TestAs_Validation(t *testing.T) {
+	t.Run("nil", func(t *testing.T) {
+		defer func() {
+			_ = recover()
+		}()
+
+		As(nil)
+
+		t.Error("did not panic")
+	})
+
+	t.Run("non-pointer", func(t *testing.T) {
+		defer func() {
+			_ = recover()
+		}()
+
+		var s struct{}
+
+		As(s)
+
+		t.Error("did not panic")
+	})
+
+	t.Run("non-error", func(t *testing.T) {
+		defer func() {
+			_ = recover()
+		}()
+
+		var s struct{}
+
+		As(&s)
+
+		t.Error("did not panic")
+	})
+}
