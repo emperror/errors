@@ -16,8 +16,8 @@ func TestAny(t *testing.T) {
 
 	t.Run("not_empty", func(t *testing.T) {
 		matcher := Any{
-			errorMatcherFunc(func(err error) bool { return false }),
-			errorMatcherFunc(func(err error) bool { return true }),
+			ErrorMatcherFunc(func(err error) bool { return false }),
+			ErrorMatcherFunc(func(err error) bool { return true }),
 		}
 
 		if !matcher.MatchError(errors.New("error")) {
@@ -37,8 +37,8 @@ func TestAll(t *testing.T) {
 
 	t.Run("not_empty", func(t *testing.T) {
 		matcher := All{
-			errorMatcherFunc(func(err error) bool { return false }),
-			errorMatcherFunc(func(err error) bool { return true }),
+			ErrorMatcherFunc(func(err error) bool { return false }),
+			ErrorMatcherFunc(func(err error) bool { return true }),
 		}
 
 		if matcher.MatchError(errors.New("error")) {
