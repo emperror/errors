@@ -31,6 +31,7 @@ Additional features:
 - `WithStackDepthIf`, `WithStackIf`, `WrapIf`, `WrapIff` only annotate errors with a stack trace if there isn't one already in the error chain
 - Multi error aggregating multiple errors into a single value
 - `NewWithDetails`, `WithDetails` and `Wrap*WithDetails` functions to add key-value pairs to an error
+- Match errors using the `match` package
 
 
 ## Installation
@@ -78,6 +79,41 @@ func main() {
 	if err := bar(); err != nil {
 		if errors.As(err, &ErrMyError{}) {
 			// handle error
+		}
+	}
+}
+```
+
+Match errors:
+
+```go
+package main
+
+import (
+    "emperror.dev/errors"
+    "emperror.dev/errors/match"
+)
+
+// ErrSomethingWentWrong is a sentinel error which can be useful within a single API layer.
+const ErrSomethingWentWrong = errors.Sentinel("something went wrong")
+
+type clientError interface{
+    ClientError() bool
+}
+
+func foo() error {
+	// Attach stack trace to the sentinel error.
+	return errors.WithStack(ErrSomethingWentWrong)
+}
+
+func main() {
+    var ce clientError
+    matcher := match.Any{match.As(&ce), match.Is(ErrSomethingWentWrong)}
+
+	if err := foo(); err != nil {
+		if matcher.MatchError(err) {
+			// you can use matchers to write complex conditions for handling (or not) an error
+            // used in emperror
 		}
 	}
 }
