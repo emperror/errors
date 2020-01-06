@@ -78,3 +78,29 @@ func TestAs(t *testing.T) {
 		t.Error("is matcher is supposed to match an error if errors.Is returns true")
 	}
 }
+
+func TestAs_Race(t *testing.T) {
+	var matchErr interface {
+		IsError() bool
+	}
+
+	matcher := As(&matchErr)
+
+	go func() {
+		if !matcher.MatchError(asErrorStub{}) {
+			t.Error("is matcher is supposed to match an error if errors.Is returns true")
+		}
+	}()
+
+	go func() {
+		if !matcher.MatchError(asErrorStub{}) {
+			t.Error("is matcher is supposed to match an error if errors.Is returns true")
+		}
+	}()
+
+	go func() {
+		if !matcher.MatchError(asErrorStub{}) {
+			t.Error("is matcher is supposed to match an error if errors.Is returns true")
+		}
+	}()
+}
