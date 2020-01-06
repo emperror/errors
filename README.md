@@ -7,6 +7,7 @@
 [![Go Version](https://img.shields.io/badge/go%20version-%3E=1.12-61CFDD.svg?style=flat-square)](https://github.com/emperror/errors)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](https://godoc.org/emperror.dev/errors)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/avelino/awesome-go#error-handling)
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B8125%2Femperror.dev%2Ferrors.svg?type=shield)](https://app.fossa.com/projects/custom%2B8125%2Femperror.dev%2Ferrors?ref=badge_shield)
 
 **Drop-in replacement for the standard library `errors` package and [github.com/pkg/errors](https://github.com/pkg/errors).**
 
@@ -98,3 +99,5 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 Certain parts of this library are inspired by (or entirely copied from) various third party libraries.
 Their licenses can be found in the [Third Party License File](LICENSE_THIRD_PARTY).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B8125%2Femperror.dev%2Ferrors.svg?type=large)](https://app.fossa.com/projects/custom%2B8125%2Femperror.dev%2Ferrors?ref=badge_large)

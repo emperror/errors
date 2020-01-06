@@ -1,0 +1,20 @@
+name: Checks
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Fossa
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Fossa CLI
+        run: curl https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | bash
+
+      - name: Analyze
+        run: fossa analyze
+        env:
+          FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
