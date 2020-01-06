@@ -15,7 +15,7 @@ endif
 
 # Dependency versions
 GOTESTSUM_VERSION = 0.3.5
-GOLANGCI_VERSION = 1.17.1
+GOLANGCI_VERSION = 1.22.2
 
 # Add the ability to override some variables
 # Use with care
@@ -54,6 +54,10 @@ bin/golangci-lint-${GOLANGCI_VERSION}:
 .PHONY: lint
 lint: bin/golangci-lint ## Run linter
 	bin/golangci-lint run
+
+.PHONY: fix
+fix: bin/golangci-lint ## Fix lint violations
+	bin/golangci-lint run --fix
 
 release-%: TAG_PREFIX = v
 release-%:
