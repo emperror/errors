@@ -10,7 +10,7 @@ linters-settings:
     golint:
         min-confidence: 0.1
     goimports:
-        local-prefixes: github.com/goph/logur
+        local-prefixes: emperror.dev/errors
 
 linters:
     enable-all: true
