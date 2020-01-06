@@ -25,11 +25,9 @@ jobs:
       - name: Build
         run: go build ./...
         env:
-          GOPATH: ${{ env.HOME }}/go
           GOFLAGS: -mod=readonly
 
       - name: Analyze
-        run: fossa analyze
+        run: GOPATH=$HOME/go fossa analyze
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
-          GOPATH: ${{ env.HOME }}/go
