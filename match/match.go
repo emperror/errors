@@ -12,11 +12,11 @@ type ErrorMatcher interface {
 	MatchError(err error) bool
 }
 
-// errorMatcherFunc turns a plain function into an ErrorMatcher if it's definition matches the interface.
-type errorMatcherFunc func(err error) bool
+// ErrorMatcherFunc turns a plain function into an ErrorMatcher if it's definition matches the interface.
+type ErrorMatcherFunc func(err error) bool
 
 // MatchError calls the underlying function to check if err matches a certain condition.
-func (fn errorMatcherFunc) MatchError(err error) bool {
+func (fn ErrorMatcherFunc) MatchError(err error) bool {
 	return fn(err)
 }
 
@@ -52,7 +52,7 @@ func (m All) MatchError(err error) bool {
 
 // Is returns an error matcher that determines matching by calling errors.Is.
 func Is(target error) ErrorMatcher {
-	return errorMatcherFunc(func(err error) bool {
+	return ErrorMatcherFunc(func(err error) bool {
 		return errors.Is(err, target)
 	})
 }
@@ -74,7 +74,7 @@ func As(target interface{}) ErrorMatcher {
 
 	tar := reflect.New(typ).Interface()
 
-	return errorMatcherFunc(func(err error) bool {
+	return ErrorMatcherFunc(func(err error) bool {
 		target := tar
 
 		return errors.As(err, &target)
