@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 10
       matrix:
-        go: ['1.12', '1.13']
+        go: ['1.11', '1.12', '1.13']
     env:
       VERBOSE: 1
       GOFLAGS: -mod=readonly
