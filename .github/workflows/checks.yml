@@ -9,8 +9,6 @@ jobs:
   build:
     name: Fossa
     runs-on: ubuntu-latest
-    env:
-      GOPATH: ${HOME}/go
 
     steps:
       - name: Download Fossa CLI
@@ -28,3 +26,4 @@ jobs:
         run: fossa analyze
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
+          GOPATH: ${{ env.HOME }}/go
