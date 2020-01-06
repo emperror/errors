@@ -19,6 +19,9 @@ jobs:
         with:
           go-version: 1.13
 
+      - name: Set up GOPATH
+        run: echo "::set-env name=GOPATH::$(go env GOPATH)"
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -31,4 +34,3 @@ jobs:
         run: fossa analyze
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
-          GOPATH: $HOME/go
