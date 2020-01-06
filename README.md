@@ -1,10 +1,10 @@
 # Emperror: Errors
 
-[![CircleCI](https://circleci.com/gh/emperror/errors.svg?style=svg)](https://circleci.com/gh/emperror/errors)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/emperror/errors/CI?style=flat-square)
 [![Coverage](https://gocover.io/_badge/emperror.dev/errors)](https://gocover.io/emperror.dev/errors)
 [![Go Report Card](https://goreportcard.com/badge/emperror.dev/errors?style=flat-square)](https://goreportcard.com/report/emperror.dev/errors)
 [![GolangCI](https://golangci.com/badges/github.com/emperror/errors.svg)](https://golangci.com/r/github.com/emperror/errors)
-[![Go Version](https://img.shields.io/badge/go%20version-%3E=1.12-orange.svg?style=flat-square)](https://github.com/emperror/errors)
+[![Go Version](https://img.shields.io/badge/go%20version-%3E=1.12-61CFDD.svg?style=flat-square)](https://github.com/emperror/errors)
 [![GoDoc](http://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square)](https://godoc.org/emperror.dev/errors)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/avelino/awesome-go#error-handling)
 
@@ -73,7 +73,7 @@ func main() {
 			// handle error
 		}
 	}
-	
+
 	if err := bar(); err != nil {
 		if errors.As(err, &ErrMyError{}) {
 			// handle error

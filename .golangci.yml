@@ -14,6 +14,12 @@ linters-settings:
 
 linters:
     enable-all: true
+    disable:
+        # TODO: fixme
+        - godox
+
+        - funlen
+        - wsl
 
 issues:
     exclude-rules:
@@ -22,4 +28,4 @@ issues:
                 - golint
 
 service:
-    golangci-lint-version: 1.17.x
+    golangci-lint-version: 1.21.x
