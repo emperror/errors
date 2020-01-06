@@ -17,7 +17,6 @@ linters:
     disable:
         # TODO: fixme
         - godox
-        - gomnd
 
         - funlen
         - wsl
@@ -29,4 +28,4 @@ issues:
                 - golint
 
 service:
-    golangci-lint-version: 1.22.x
+    golangci-lint-version: 1.21.x
