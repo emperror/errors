@@ -9,6 +9,9 @@ jobs:
   build:
     name: Fossa
     runs-on: ubuntu-latest
+    env:
+      GOPATH: ${{ env.HOME }}/go
+      GOFLAGS: -mod=readonly
 
     steps:
       - name: Download Fossa CLI
@@ -22,8 +25,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Build
+        run: go build
+
       - name: Analyze
         run: fossa analyze
         env:
           FOSSA_API_KEY: ${{ secrets.FOSSA_API_KEY }}
-          GOPATH: ${{ env.HOME }}/go
