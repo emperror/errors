@@ -1,6 +1,5 @@
-# Emperror: Errors
+# Emperror: Errors [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/avelino/awesome-go#error-handling)
 
-[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/avelino/awesome-go#error-handling)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/emperror/errors/CI?style=flat-square)
 [![Codecov](https://img.shields.io/codecov/c/github/emperror/errors?style=flat-square)](https://codecov.io/gh/emperror/errors)
 [![Go Report Card](https://goreportcard.com/badge/emperror.dev/errors?style=flat-square)](https://goreportcard.com/report/emperror.dev/errors)
