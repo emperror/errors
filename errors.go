@@ -172,14 +172,7 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 // 	%v	one error message per line
 // 	%+v	one error message per line and stack trace (if any)
 func WithMessage(err error, message string) error {
-	if err == nil {
-		return nil
-	}
-
-	return &withMessage{
-		error: err,
-		msg:   message,
-	}
+	return errors.WithMessage(err, message)
 }
 
 // WithMessagef annotates err with the format specifier.
@@ -190,38 +183,7 @@ func WithMessage(err error, message string) error {
 //
 // The same formatting rules apply as in case of WithMessage.
 func WithMessagef(err error, format string, a ...interface{}) error {
-	if err == nil {
-		return nil
-	}
-
-	return &withMessage{
-		error: err,
-		msg:   fmt.Sprintf(format, a...),
-	}
-}
-
-type withMessage struct {
-	error error
-	msg   string
-}
-
-func (w *withMessage) Error() string { return w.msg + ": " + w.error.Error() }
-func (w *withMessage) Cause() error  { return w.error }
-func (w *withMessage) Unwrap() error { return w.error }
-
-// nolint: errcheck
-func (w *withMessage) Format(s fmt.State, verb rune) {
-	switch verb {
-	case 'v':
-		if s.Flag('+') {
-			fmt.Fprintf(s, "%+v\n", w.error)
-			io.WriteString(s, w.msg)
-			return
-		}
-		fallthrough
-	case 's', 'q':
-		io.WriteString(s, w.Error())
-	}
+	return errors.WithMessagef(err, format, a...)
 }
 
 // Wrap returns an error annotating err with a stack trace
