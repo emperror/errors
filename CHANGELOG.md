@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Updated dependencies ([github.com/pkg/errors](https://github.com/pkg/errors))
+- Use `WithMessage` and `WithMessagef` from [github.com/pkg/errors](https://github.com/pkg/errors)
+
 
 ## [0.6.0] - 2020-01-09
 
