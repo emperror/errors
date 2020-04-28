@@ -87,19 +87,19 @@ func TestStackTraceFormat(t *testing.T) {
 	}, {
 		stackTrace()[:2],
 		"%v",
-		`\[stack_test.go:36 stack_test.go:83\]`,
+		`\[stack_test.go:39 stack_test.go:88\]`,
 	}, {
 		stackTrace()[:2],
 		"%+v",
 		"\n" +
 			"emperror.dev/errors.stackTrace\n" +
-			"\t.+/stack_test.go:36\n" +
+			"\t.+/stack_test.go:39\n" +
 			"emperror.dev/errors.TestStackTraceFormat\n" +
-			"\t.+/stack_test.go:87",
+			"\t.+/stack_test.go:92",
 	}, {
 		stackTrace()[:2],
 		"%#v",
-		`\[\]errors.Frame{stack_test.go:36, stack_test.go:95}`,
+		`\[\]errors.Frame{stack_test.go:39, stack_test.go:100}`,
 	}}
 
 	for i, tt := range tests {
