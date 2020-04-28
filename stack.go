@@ -47,6 +47,7 @@ func (s *stack) StackTrace() StackTrace {
 	for i := 0; i < len(f); i++ {
 		f[i] = Frame((*s)[i])
 	}
+
 	return f
 }
 
@@ -54,8 +55,12 @@ func (s *stack) StackTrace() StackTrace {
 // but accepts a custom depth (useful to customize the error constructor caller depth).
 func callers(depth int) *stack {
 	const maxDepth = 32
+
 	var pcs [maxDepth]uintptr
+
 	n := runtime.Callers(2+depth, pcs[:])
+
 	var st stack = pcs[0:n]
+
 	return &st
 }

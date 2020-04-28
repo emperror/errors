@@ -23,14 +23,14 @@ import (
 // If any of the passed errors is already an aggregated error, it will be flattened along
 // with the other errors.
 //
-// 	errors.Combine(errors.Combine(err1, err2), err3)
-// 	// is the same as
-// 	errors.Combine(err1, err2, err3)
+//		errors.Combine(errors.Combine(err1, err2), err3)
+//		// is the same as
+//		errors.Combine(err1, err2, err3)
 //
 // The returned error formats into a readable multi-line error message if
 // formatted with %+v.
 //
-// 	fmt.Sprintf("%+v", errors.Combine(err1, err2))
+//		fmt.Sprintf("%+v", errors.Combine(err1, err2))
 func Combine(errors ...error) error {
 	return multierr.Combine(errors...)
 }
@@ -40,16 +40,16 @@ func Combine(errors ...error) error {
 // This function is a specialization of Combine for the common case where
 // there are only two errors.
 //
-// 	err = errors.Append(reader.Close(), writer.Close())
+//		err = errors.Append(reader.Close(), writer.Close())
 //
 // The following pattern may also be used to record failure of deferred
 // operations without losing information about the original error.
 //
-// 	func doSomething(..) (err error) {
-// 		f := acquireResource()
-// 		defer func() {
-// 			err = errors.Append(err, f.Close())
-// 		}()
+//		func doSomething(..) (err error) {
+//			f := acquireResource()
+//			defer func() {
+//				err = errors.Append(err, f.Close())
+//			}()
 func Append(left error, right error) error {
 	return multierr.Append(left, right)
 }
@@ -57,8 +57,8 @@ func Append(left error, right error) error {
 // GetErrors returns a slice containing zero or more errors that the supplied
 // error is composed of. If the error is nil, the returned slice is empty.
 //
-// 	err := errors.Append(r.Close(), w.Close())
-// 	errors := errors.GetErrors(err)
+//		err := errors.Append(r.Close(), w.Close())
+//		errors := errors.GetErrors(err)
 //
 // If the error is not composed of other errors, the returned slice contains
 // just the error that was passed in.

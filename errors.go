@@ -29,7 +29,7 @@ import (
 // NewPlain returns a simple error without any annotated context, like stack trace.
 // Useful for creating sentinel errors and in testing.
 //
-// 	var ErrSomething = errors.NewPlain("something went wrong")
+//		var ErrSomething = errors.NewPlain("something went wrong")
 func NewPlain(message string) error {
 	return &plainError{message}
 }
@@ -58,7 +58,7 @@ func (e Sentinel) Error() string {
 // New returns a new error annotated with stack trace at the point New is called.
 //
 // New is a shorthand for:
-// 	WithStack(NewPlain(message))
+//		WithStack(NewPlain(message))
 func New(message string) error {
 	return WithStackDepth(NewPlain(message), 1)
 }
@@ -71,7 +71,7 @@ func NewWithDetails(message string, details ...interface{}) error {
 
 // Errorf returns a new error with a formatted message and annotated with stack trace at the point Errorf is called.
 //
-// 	err := errors.Errorf("something went %s", "wrong")
+//		err := errors.Errorf("something went %s", "wrong")
 func Errorf(format string, a ...interface{}) error {
 	return WithStackDepth(NewPlain(fmt.Sprintf(format, a...)), 1)
 }
@@ -82,11 +82,11 @@ func Errorf(format string, a ...interface{}) error {
 // WithStack is commonly used with sentinel errors and errors returned from libraries
 // not annotating errors with stack trace:
 //
-// 	var ErrSomething = errors.NewPlain("something went wrong")
+//		var ErrSomething = errors.NewPlain("something went wrong")
 //
-// 	func doSomething() error {
-// 		return errors.WithStack(ErrSomething)
-// 	}
+//		func doSomething() error {
+//			return errors.WithStack(ErrSomething)
+//		}
 func WithStack(err error) error {
 	return WithStackDepth(err, 1)
 }
@@ -97,9 +97,9 @@ func WithStack(err error) error {
 //
 // WithStackDepth is generally used in other error constructors:
 //
-// 	func MyWrapper(err error) error {
-// 		return WithStackDepth(err, 1)
-// 	}
+//		func MyWrapper(err error) error {
+//			return WithStackDepth(err, 1)
+//		}
 func WithStackDepth(err error, depth int) error {
 	if err == nil {
 		return nil
@@ -150,8 +150,10 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 		if s.Flag('+') {
 			fmt.Fprintf(s, "%+v", w.error)
 			w.stack.Format(s, verb)
+
 			return
 		}
+
 		fallthrough
 	case 's':
 		io.WriteString(s, w.Error())
@@ -167,10 +169,10 @@ func (w *withStack) Format(s fmt.State, verb rune) {
 // helps in debugging.
 //
 // Errors returned by WithMessage are formatted slightly differently:
-// 	%s	error messages separated by a colon and a space (": ")
-// 	%q	double-quoted error messages separated by a colon and a space (": ")
-// 	%v	one error message per line
-// 	%+v	one error message per line and stack trace (if any)
+//		%s	error messages separated by a colon and a space (": ")
+//		%q	double-quoted error messages separated by a colon and a space (": ")
+//		%v	one error message per line
+//		%+v	one error message per line and stack trace (if any)
 func WithMessage(err error, message string) error {
 	return errors.WithMessage(err, message)
 }
@@ -191,7 +193,7 @@ func WithMessagef(err error, format string, a ...interface{}) error {
 // If err is nil, Wrap returns nil.
 //
 // Wrap is a shorthand for:
-// 	WithStack(WithMessage(err, message))
+//		WithStack(WithMessage(err, message))
 func Wrap(err error, message string) error {
 	return WithStackDepth(WithMessage(err, message), 1)
 }
@@ -201,7 +203,7 @@ func Wrap(err error, message string) error {
 // If err is nil, Wrapf returns nil.
 //
 // Wrapf is a shorthand for:
-// 	WithStack(WithMessagef(err, format, a...))
+//		WithStack(WithMessagef(err, format, a...))
 func Wrapf(err error, format string, a ...interface{}) error {
 	return WithStackDepth(WithMessagef(err, format, a...), 1)
 }
@@ -227,7 +229,7 @@ func WrapIff(err error, format string, a ...interface{}) error {
 // If err is nil, WrapWithDetails returns nil.
 //
 // WrapWithDetails is a shorthand for:
-// 	WithDetails(WithStack(WithMessage(err, message, details...))
+//		WithDetails(WithStack(WithMessage(err, message, details...))
 func WrapWithDetails(err error, message string, details ...interface{}) error {
 	return WithDetails(WithStackDepth(WithMessage(err, message), 1), details...)
 }
@@ -237,7 +239,7 @@ func WrapWithDetails(err error, message string, details ...interface{}) error {
 // If err is nil, WrapIfWithDetails returns nil.
 //
 // WrapIfWithDetails is a shorthand for:
-// 	WithDetails(WithStackIf(WithMessage(err, message, details...))
+//		WithDetails(WithStackIf(WithMessage(err, message, details...))
 func WrapIfWithDetails(err error, message string, details ...interface{}) error {
 	return WithDetails(WithStackDepthIf(WithMessage(err, message), 1), details...)
 }

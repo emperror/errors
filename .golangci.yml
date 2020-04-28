@@ -15,17 +15,14 @@ linters-settings:
 linters:
     enable-all: true
     disable:
-        # TODO: fixme
-        - godox
-
         - funlen
-        - wsl
+        - gomnd
+        - testpackage
+
+        - godox
 
 issues:
     exclude-rules:
         -   text: "package comment should not have leading space"
             linters:
                 - golint
-
-service:
-    golangci-lint-version: 1.21.x

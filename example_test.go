@@ -100,7 +100,9 @@ func ExampleCombine_loop() {
 		err := errors.NewPlain(fmt.Sprintf("call %d failed", i))
 		errs = append(errs, err)
 	}
+
 	err := errors.Combine(errs...)
+
 	fmt.Printf("%+v", err)
 	// Output:
 	// the following errors occurred:

@@ -24,6 +24,7 @@ func TestStackTrace(t *testing.T) {
 	}
 	for i, tt := range tests {
 		st := tt.stack.StackTrace()
+
 		for j, want := range tt.want {
 			testFormatRegexp(t, i, st[j], "%+v", want)
 		}
@@ -32,9 +33,13 @@ func TestStackTrace(t *testing.T) {
 
 func stackTrace() StackTrace {
 	const depth = 8
+
 	var pcs [depth]uintptr
+
 	n := runtime.Callers(1, pcs[:])
+
 	var st stack = pcs[0:n]
+
 	return st.StackTrace()
 }
 
