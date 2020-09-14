@@ -29,7 +29,7 @@ func ExampleAs() {
 }
 
 func ExampleIs() {
-	var ErrSomething = errors.NewPlain("something")
+	ErrSomething := errors.NewPlain("something")
 
 	if err := errors.Wrap(ErrSomething, "error"); err != nil {
 		if errors.Is(err, ErrSomething) {
@@ -44,7 +44,7 @@ func ExampleIs() {
 }
 
 func ExampleUnwrap() {
-	var ErrSomething = errors.NewPlain("something")
+	ErrSomething := errors.NewPlain("something")
 
 	if err := errors.WithMessage(ErrSomething, "error"); err != nil {
 		if errors.Unwrap(err) == ErrSomething {
@@ -59,7 +59,7 @@ func ExampleUnwrap() {
 }
 
 func ExampleCause() {
-	var ErrSomething = errors.NewPlain("something")
+	ErrSomething := errors.NewPlain("something")
 
 	if err := errors.Wrap(ErrSomething, "error"); err != nil {
 		if errors.Cause(err) == ErrSomething {
