@@ -1,5 +1,5 @@
 /bin/
-/build/
+/tmp/
 /vendor/
 
 # IDE integration
