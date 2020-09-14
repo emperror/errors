@@ -2,9 +2,6 @@
 /build/
 /vendor/
 
-/.env.test
-/docker-compose.override.yml
-
 # IDE integration
 /.idea/*
 !/.idea/codeStyles/
