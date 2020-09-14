@@ -16,6 +16,6 @@ curl https://raw.githubusercontent.com/pkg/errors/master/example_test.go | sed '
 curl https://raw.githubusercontent.com/pkg/errors/master/format_test.go | sed \\\\$'s|"errors"|. "emperror.dev/errors"|; s|/github.com/pkg/errors||g; s|github.com/pkg/errors|emperror.dev/errors/tests|g; s|errors\.New|NewPlain|g' > tests/format_test.go
 
 curl https://raw.githubusercontent.com/golang/go/master/src/errors/errors_test.go | sed \\\\$'s|"errors"|"emperror.dev/errors"|; s|errors\.New|errors.NewPlain|g; s|"fmt"||g' | head -35 > tests/errors_std_test.go
-curl https://raw.githubusercontent.com/golang/go/master/src/errors/wrap_test.go | sed \\\\$'s|"errors"|"emperror.dev/errors"|; s|errors\.New|errors.NewPlain|g' > tests/wrap_test.go
+echo -e "// +build go1.13\n\n\\\$(curl https://raw.githubusercontent.com/golang/go/master/src/errors/wrap_test.go)" | sed \\\\$'s|"errors"|"emperror.dev/errors"|; s|errors\.New|errors.NewPlain|g' > tests/wrap_test.go
 """,
 )

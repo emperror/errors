@@ -5,8 +5,8 @@ version = 15.3.1-beta.1
 importpath = emperror.dev/errors
 
 [buildconfig]
-golangci-lint-version = 1.25.1
-gotestsum-version = 0.4.2
+golangci-lint-version = 1.31.0
+gotestsum-version = 0.5.3
 
 [alias "lint"]
 desc = Runs linters for this repo

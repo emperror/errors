@@ -1,3 +1,5 @@
+// +build go1.13
+
 // Copyright 2018 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
@@ -236,6 +238,19 @@ func (errorUncomparable) Error() string {
 func (errorUncomparable) Is(target error) bool {
 	_, ok := target.(errorUncomparable)
 	return ok
+}
+
+func ExampleIs() {
+	if _, err := os.Open("non-existing"); err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			fmt.Println("file does not exist")
+		} else {
+			fmt.Println(err)
+		}
+	}
+
+	// Output:
+	// file does not exist
 }
 
 func ExampleAs() {
