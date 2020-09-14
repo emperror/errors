@@ -7,8 +7,31 @@ on:
   pull_request:
 
 jobs:
-  build:
-    name: Build
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ['1.12', '1.15'] # Some code is Go <=1.12 only
+    env:
+      GOFLAGS: -mod=readonly
+      GOPROXY: https://proxy.golang.org
+      PLZ_ARGS: -p
+
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Lint
+        run: ./pleasew $PLZ_ARGS lint
+
+  test:
+    name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,10 +50,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Lint
-        run: ./pleasew $PLZ_ARGS lint
-
-      - name: Run tests
+      - name: Test
         run: ./pleasew $PLZ_ARGS gotest
 
       - name: Upload coverage
