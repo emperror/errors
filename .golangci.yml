@@ -20,6 +20,7 @@ linters:
         - testpackage
 
         - godox
+        - wsl
 
 issues:
     exclude-rules:
