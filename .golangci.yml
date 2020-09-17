@@ -10,10 +10,10 @@ run:
 linters-settings:
     gci:
         local-prefixes: emperror.dev/errors
-    golint:
-        min-confidence: 0
     goimports:
         local-prefixes: emperror.dev/errors
+    golint:
+        min-confidence: 0
 
 linters:
     disable-all: true
