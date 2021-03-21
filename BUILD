@@ -1,7 +1,7 @@
 github_repo(
     name = "pleasings2",
     repo = "sagikazarmark/mypleasings",
-    revision = "f8a12721c6f929db3e227e07c152d428ac47ab1b",
+    revision = "ae0d49ae0eac8d227d202e9aed3b1b1b8915c073",
 )
 
 sh_cmd(

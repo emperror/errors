@@ -1,5 +1,5 @@
 [please]
-version = 15.5.0
+version = 16.0.0-prerelease.13
 
 [go]
 importpath = emperror.dev/errors
