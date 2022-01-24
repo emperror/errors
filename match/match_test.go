@@ -2,6 +2,7 @@ package match
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 )
 
@@ -76,6 +77,40 @@ func TestAs(t *testing.T) {
 
 	if !matcher.MatchError(asErrorStub{}) {
 		t.Error("is matcher is supposed to match an error if errors.Is returns true")
+	}
+}
+
+type errorData struct {
+	data string
+}
+
+func (e errorData) Error() string {
+	return e.data
+}
+
+func TestAs_SetMatchedError(t *testing.T) {
+	var matchErr errorData
+
+	matcher := As(&matchErr)
+
+	matchingErr := fmt.Errorf("wrapping error: %w", errorData{"target data"})
+
+	if !matcher.MatchError(matchingErr) {
+		t.Error("As matcher is not supposed to match an error that cannot be assigned from the error chain")
+	}
+
+	if matchErr.data != "target data" {
+		t.Error("As matcher is supposed to set the matched error to it's value in the chain")
+	}
+}
+
+func TestAs_IncompatibleErrors(t *testing.T) {
+	var matchErr errorData
+
+	matcher := As(&matchErr)
+
+	if matcher.MatchError(errors.New("error")) {
+		t.Error("As matcher is not supposed to match an error that cannot be assigned from the error chain")
 	}
 }
 
