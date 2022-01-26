@@ -2,7 +2,6 @@ package match
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 )
 
@@ -88,12 +87,20 @@ func (e errorData) Error() string {
 	return e.data
 }
 
+type wrappingError struct {
+	error
+}
+
+func (w wrappingError) Unwrap() error {
+	return w.error
+}
+
 func TestAs_SetMatchedError(t *testing.T) {
 	var matchErr errorData
 
 	matcher := As(&matchErr)
 
-	matchingErr := fmt.Errorf("wrapping error: %w", errorData{"target data"})
+	matchingErr := wrappingError{error: errorData{"target data"}}
 
 	if !matcher.MatchError(matchingErr) {
 		t.Error("As matcher is not supposed to match an error that cannot be assigned from the error chain")
