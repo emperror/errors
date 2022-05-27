@@ -30,7 +30,7 @@ func WithDetails(err error, details ...interface{}) error {
 	// Limiting the capacity of the stored keyvals ensures that a new
 	// backing array is created if the slice must grow in With.
 	// Using the extra capacity without copying risks a data race.
-	d := append(w.details, details...)
+	d := append(w.details, details...) // nolint:gocritic
 	w.details = d[:len(d):len(d)]
 
 	return err
