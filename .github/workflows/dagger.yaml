@@ -1,0 +1,41 @@
+name: Dagger
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ['1.14', '1.15', '1.16', '1.17', '1.18']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Dagger
+        uses: dagger/dagger-for-github@v3
+        with:
+          cmds: |
+            project update
+            do check test go ${{ matrix.go }}
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Dagger
+        uses: dagger/dagger-for-github@v3
+        with:
+          cmds: |
+            project update
+            do check lint

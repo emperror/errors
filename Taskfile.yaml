@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+  check:
+    cmds:
+      - dagger do check
+
+  lint:
+    cmds:
+      - dagger do check lint
+
+  fmt:
+    cmds:
+      - golangci-lint run --fix

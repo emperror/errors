@@ -1,0 +1,84 @@
+{
+  "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1652776076,
+        "narHash": "sha256-gzTw/v1vj4dOVbpBSJX4J0DwUR6LIyXo7/SuuTJp1kM=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "04c1b180862888302ddfb2e3ad9eaa63afc60cf8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "gobin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1652111277,
+        "narHash": "sha256-jxl+fhzykhPP708r+WMotsg8Bjti9fpRoh4KiwPJ7XM=",
+        "owner": "sagikazarmark",
+        "repo": "go-bin-flake",
+        "rev": "7520b0da6c41e9d698ff5b408688de426c0218ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sagikazarmark",
+        "repo": "go-bin-flake",
+        "type": "github"
+      }
+    },
+    "goflake": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1653238580,
+        "narHash": "sha256-oY/LS2l70cLC58TQ+ByuJDSa6kYg+ka46bKqJItwSpA=",
+        "owner": "sagikazarmark",
+        "repo": "go-flake",
+        "rev": "1d00595d82d74ca0f3ba0cf8bd52bb42f3801b1d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sagikazarmark",
+        "repo": "go-flake",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1653407748,
+        "narHash": "sha256-g9puJaILRTb9ttlLQ7IehpV7Wcy0n+vs8LOFu6ylQcM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5ce6597eca7d7b518c03ecda57d45f9404b5e060",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "gobin": "gobin",
+        "goflake": "goflake",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
