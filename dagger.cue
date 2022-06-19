@@ -77,12 +77,20 @@ dagger.#Plan & {
 							// if _env.CODECOV_TOKEN != _|_ {
 							//  token: _env.CODECOV_TOKEN
 							// }
+
+							// Fixes https://github.com/dagger/dagger/issues/2680
+							_token: client.env.CODECOV_TOKEN
+
+							if client.env.CODECOV_TOKEN != _|_ {
+								token: client.env.CODECOV_TOKEN
+							}
+
 							// token: client.env.CODECOV_TOKEN
 
 							env: {
-								if client.env.CODECOV_TOKEN != _|_ {
-									CODECOV_TOKEN: client.env.CODECOV_TOKEN
-								}
+								// if client.env.CODECOV_TOKEN != _|_ {
+								//  CODECOV_TOKEN: client.env.CODECOV_TOKEN
+								// }
 								GITHUB_ACTIONS:    client.env.GITHUB_ACTIONS
 								GITHUB_HEAD_REF:   client.env.GITHUB_HEAD_REF
 								GITHUB_REF:        client.env.GITHUB_REF
