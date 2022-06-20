@@ -19,6 +19,7 @@ dagger.#Plan & {
 	]
 	client: network: "unix:///var/run/docker.sock": connect: dagger.#Socket
 	client: env: {
+		CI:                string | *""
 		GITHUB_ACTIONS:    string | *""
 		GITHUB_ACTION:     string | *""
 		GITHUB_HEAD_REF:   string | *""
@@ -86,6 +87,8 @@ dagger.#Plan & {
 							if client.env.CODECOV_TOKEN != _|_ {
 								token: client.env.CODECOV_TOKEN
 							}
+
+							dryRun: client.env.CI != "true"
 
 							// token: client.env.CODECOV_TOKEN
 

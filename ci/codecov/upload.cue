@@ -16,6 +16,9 @@ import (
 	// Codecov token (required for local runs and private repos)
 	token?: dagger.#Secret
 
+	// Don't upload files to Codecov
+	dryRun: bool | *false
+
 	_image: #Image
 
 	_sourcePath: "/src"
@@ -27,6 +30,10 @@ import (
 			flags: {
 				"--file":    file
 				"--verbose": true
+
+				if dryRun {
+					"--dryRun": true
+				}
 			}
 		}
 		env: {
