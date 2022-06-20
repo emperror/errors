@@ -25,7 +25,8 @@ import (
 		command: {
 			name: "codecov"
 			flags: {
-				"--file": file
+				"--file":    file
+				"--verbose": true
 			}
 		}
 		env: {

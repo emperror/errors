@@ -24,6 +24,7 @@ dagger.#Plan & {
 		GITHUB_REF:        string | *""
 		GITHUB_REPOSITORY: string | *""
 		GITHUB_RUN_ID:     string | *""
+		GITHUB_SERVER_URL: string | *""
 		GITHUB_SHA:        string | *""
 		GITHUB_WORKFLOW:   string | *""
 		CODECOV_TOKEN?:    dagger.#Secret
@@ -96,6 +97,7 @@ dagger.#Plan & {
 								GITHUB_REF:        client.env.GITHUB_REF
 								GITHUB_REPOSITORY: client.env.GITHUB_REPOSITORY
 								GITHUB_RUN_ID:     client.env.GITHUB_RUN_ID
+								GITHUB_SERVER_URL: client.env.GITHUB_SERVER_URL
 								GITHUB_SHA:        client.env.GITHUB_SHA
 								GITHUB_WORKFLOW:   client.env.GITHUB_WORKFLOW
 							}
