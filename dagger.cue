@@ -20,6 +20,7 @@ dagger.#Plan & {
 	client: network: "unix:///var/run/docker.sock": connect: dagger.#Socket
 	client: env: {
 		GITHUB_ACTIONS:    string | *""
+		GITHUB_ACTION:     string | *""
 		GITHUB_HEAD_REF:   string | *""
 		GITHUB_REF:        string | *""
 		GITHUB_REPOSITORY: string | *""
@@ -93,6 +94,7 @@ dagger.#Plan & {
 								//  CODECOV_TOKEN: client.env.CODECOV_TOKEN
 								// }
 								GITHUB_ACTIONS:    client.env.GITHUB_ACTIONS
+								GITHUB_ACTION:     client.env.GITHUB_ACTION
 								GITHUB_HEAD_REF:   client.env.GITHUB_HEAD_REF
 								GITHUB_REF:        client.env.GITHUB_REF
 								GITHUB_REPOSITORY: client.env.GITHUB_REPOSITORY
