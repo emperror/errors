@@ -79,6 +79,48 @@ func TestAs(t *testing.T) {
 	}
 }
 
+type errorData struct {
+	data string
+}
+
+func (e errorData) Error() string {
+	return e.data
+}
+
+type wrappingError struct {
+	error
+}
+
+func (w wrappingError) Unwrap() error {
+	return w.error
+}
+
+func TestAs_SetMatchedError(t *testing.T) {
+	var matchErr errorData
+
+	matcher := As(&matchErr)
+
+	matchingErr := wrappingError{error: errorData{"target data"}}
+
+	if !matcher.MatchError(matchingErr) {
+		t.Error("As matcher is not supposed to match an error that cannot be assigned from the error chain")
+	}
+
+	if matchErr.data != "target data" {
+		t.Error("As matcher is supposed to set the matched error to it's value in the chain")
+	}
+}
+
+func TestAs_IncompatibleErrors(t *testing.T) {
+	var matchErr errorData
+
+	matcher := As(&matchErr)
+
+	if matcher.MatchError(errors.New("error")) {
+		t.Error("As matcher is not supposed to match an error that cannot be assigned from the error chain")
+	}
+}
+
 func TestAs_Race(t *testing.T) {
 	var matchErr interface {
 		IsError() bool

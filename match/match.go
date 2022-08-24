@@ -74,12 +74,8 @@ func As(target interface{}) ErrorMatcher {
 		panic("errors: *target must be interface or implement error")
 	}
 
-	tar := reflect.New(typ).Interface()
-
 	return ErrorMatcherFunc(func(err error) bool {
-		target := tar
-
-		return errors.As(err, &target)
+		return errors.As(err, target)
 	})
 }
 
